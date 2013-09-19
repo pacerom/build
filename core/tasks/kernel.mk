@@ -104,7 +104,7 @@ endef
 
 ifeq ($(TARGET_ARCH),arm)
     ifneq ($(USE_CCACHE),)
-      ccache := $(ANDROID_BUILD_TOP)/prebuilt/$(HOST_PREBUILT_TAG)/ccache/ccache
+      ccache := $(ANDROID_BUILD_TOP)/prebuilts/misc/$(HOST_PREBUILT_TAG)/ccache/ccache
       # Check that the executable is here.
       ccache := $(strip $(wildcard $(ccache)))
     endif
