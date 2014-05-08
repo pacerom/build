@@ -300,6 +300,11 @@ def BuildBootableImage(sourcedir, fs_config_file, info_dict=None):
     cmd.append(img.name)
 
   else:
+    fn = os.path.join(sourcedir, "dt")
+    if os.access(fn, os.F_OK):
+      cmd.append("--dt")
+      cmd.append(fn)
+
     fn = os.path.join(sourcedir, "cmdline")
     if os.access(fn, os.F_OK):
       cmd.append("--cmdline")
