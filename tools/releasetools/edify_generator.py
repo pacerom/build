@@ -238,9 +238,9 @@ class EdifyGenerator(object):
       else:
         raise ValueError("don't know how to write \"%s\" partitions" % (p.fs_type,))
 
-  def SetPermissions(self, fn, uid, gid, mode, selabel, capabilities):
+  def SetPermissions(self, fn, uid, gid, mode, selabel, capabilities, no_metadata=False):
     """Set file ownership and permissions."""
-    if not self.info.get("use_set_metadata", False):
+    if no_metadata or not self.info.get("use_set_metadata", False):
       self.script.append('set_perm(%d, %d, 0%o, "%s");' % (uid, gid, mode, fn))
     else:
       if capabilities is None: capabilities = "0x0"
@@ -251,9 +251,9 @@ class EdifyGenerator(object):
       cmd += ');'
       self.script.append(cmd)
 
-  def SetPermissionsRecursive(self, fn, uid, gid, dmode, fmode, selabel, capabilities):
+  def SetPermissionsRecursive(self, fn, uid, gid, dmode, fmode, selabel, capabilities, no_metadata=False):
     """Recursively set path ownership and permissions."""
-    if not self.info.get("use_set_metadata", False):
+    if no_metadata or not self.info.get("use_set_metadata", False):
       self.script.append('set_perm_recursive(%d, %d, 0%o, 0%o, "%s");'
                          % (uid, gid, dmode, fmode, fn))
     else:
