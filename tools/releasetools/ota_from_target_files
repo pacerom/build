@@ -60,6 +60,9 @@ Usage:  ota_from_target_files [flags] input_target_files output_ota_package
   --override_device <device>
       Override device-specific asserts. Can be a comma-separated list.
 
+  --variant <true|false>
+      Specify whether to use variant script (off by default).
+
 """
 
 import sys
@@ -514,6 +517,11 @@ else if get_stage("%(bcb_dev)s", "stage") == "3/3" then
 
   symlinks = CopySystemFiles(input_zip, output_zip)
   script.MakeSymlinks(symlinks)
+
+  if OPTIONS.variant:
+    script.AppendExtra("""
+run_program("/tmp/install/bin/variant");
+""")
 
   boot_img = common.GetBootableImage("boot.img", "boot.img",
                                      OPTIONS.input_tmp, "BOOT")
@@ -993,6 +1001,8 @@ def main(argv):
       OPTIONS.two_step = True
     elif o in ("--override_device"):
       OPTIONS.override_device = a
+    elif o in ("--variant"):
+      OPTIONS.variant = a
     else:
       return False
     return True
@@ -1009,6 +1019,7 @@ def main(argv):
                                               "aslr_mode=",
                                               "two_step",
                                               "override_device=",
+                                              "variant=",
                                               ],
                              extra_option_handler=option_handler)
 
