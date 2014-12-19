@@ -1148,6 +1148,9 @@ def MakeRecoveryPatch(input_dir, output_sink, recovery_img, boot_img,
   common.LoadInfoDict() on the input target_files.
   """
 
+  # Never make the recovery patch
+  return
+
   if info_dict is None:
     info_dict = OPTIONS.info_dict
 
